@@ -1,6 +1,6 @@
 const { prompt } = require("inquirer");
 const logo = require("asciiart-logo");
-const db = require("./db");
+const db = require("./db/queries");
 require("console.table");
 
 init();
@@ -28,7 +28,7 @@ async function loadMainPrompts() {
             value: "VIEW_EMPLOYEES"
         }, {
             name: "View All Employees By Department",
-            value: "VIEW_EMPLOYEES_BY_DEPARTMENR"
+            value: "VIEW_EMPLOYEES_BY_DEPARTMENT"
         }, {
             name: "View All Employees By Manager",
             value: "VIEW_EMPLOYEES_BY_MANAGER"
@@ -112,6 +112,30 @@ async function viewEmployees() {
     loadMainPrompts();
 }
 
+async function viewEmployeesByDepartment() {
+    console.log('is this called erinakf')
+    const departments = await db.findAllEmployees();
+
+    const departmentChoices = departments.map(({ id, name }) => ({
+        name: name,
+        value: id
+    }));
+
+    const { departmentId } = await prompt({
+        type: "list",
+        name: "departmentId",
+        message: "Which departemnt would you like to see employees for?",
+        choices: departmentChoices
+    });
+
+    const employees = await db.findAllEmployeesByDepartment(departmentId);
+
+    console.log("\n");
+    console.table(employees);
+
+    loadMainPrompts();
+}
+
 async function viewEmployeesByManager() {
     const employees = await db.findAllEmployees();
 
@@ -120,6 +144,7 @@ async function viewEmployeesByManager() {
 
     loadMainPrompts();
 }
+
 async function viewRoles() {
     const employees = await db.findAllEmployees();
 
@@ -128,6 +153,7 @@ async function viewRoles() {
 
     loadMainPrompts();
 }
+
 async function viewDepartments() {
     const employees = await db.findAllEmployees();
 
