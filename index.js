@@ -113,7 +113,6 @@ async function viewEmployees() {
 }
 
 async function viewEmployeesByDepartment() {
-    console.log('is this called erinakf')
     const departments = await db.findAllEmployees();
 
     const departmentChoices = departments.map(({ id, name }) => ({
@@ -137,7 +136,21 @@ async function viewEmployeesByDepartment() {
 }
 
 async function viewEmployeesByManager() {
-    const employees = await db.findAllEmployees();
+    const managers = await db.findAllEmployees();
+
+    const managerChoices = managers.map(({ id, first_name, last_name }) => ({
+        name: `${first_name} ${last_name}`,
+        value: id
+    }));
+
+    const { managerId } = await prompt({
+        type: "list",
+        name: "managerId",
+        message: "Which manager would you like to see direct reports for?",
+        choices: managerChoices
+    });
+
+    const employees = await db.findAllEmployeesByManager(managerId);
 
     console.log("\n");
     console.table(employees);
@@ -146,19 +159,19 @@ async function viewEmployeesByManager() {
 }
 
 async function viewRoles() {
-    const employees = await db.findAllEmployees();
+    const roles = await db.findAllRoles();
 
     console.log("\n");
-    console.table(employees);
+    console.table(roles);
 
     loadMainPrompts();
 }
 
 async function viewDepartments() {
-    const employees = await db.findAllEmployees();
+    const departments = await db.findAllDepartments();
 
     console.log("\n");
-    console.table(employees);
+    console.table(departments);
 
     loadMainPrompts();
 }

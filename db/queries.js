@@ -11,7 +11,6 @@ class DB {
 
     // 1.) Find all employees, join with roles and departments to display their roles, salaries, departments, and managers
     findAllEmployees() {
-        console.log('caleld my fuinc');
         return this.connection.query(
             "SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id LEFT JOIN employee manager on manager.id = employee.manager_id;"
         );
@@ -27,24 +26,27 @@ class DB {
 
     // 3.) Find all employees by manager, join with departments and roles to display titles and department names
     findAllEmployeesByManager(managerId) {
-
+        return this.connection.query(
+            "SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id LEFT JOIN employee manager on manager.id = employee.manager_id WHERE manager.id = ?; ",
+            managerId
+        );
     }
 
     // 4.) Find all roles, join with departments to display the department name
     findAllRoles() {
         return this.connection.query(
-            "SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id LEFT JOIN employee manager on manager.id = employee.manager_id;"
+            "SELECT role.title AS Role, department.name AS Department FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id"
         );
     }
 
     // 5.) Find all departments, join with employees and roles and sum up utilized department budget
-    // QUERY = "SELECT department.id, department.name, SUM(role.salary) AS utilized_budget FROM employee 
-    //LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id GROUP BY department.id, department.name;"
     findAllDepartments() {
-
+        return this.connection.query(
+            "SELECT department.id, department.name, SUM(role.salary) AS utilized_budget FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id GROUP BY department.id, department.name;"
+        );
     }
 
-    // 2.) Find all employees except the given employee id - why is this needed??????
+    //Find all employees except the given employee id - why is this needed??????
 
 
 
