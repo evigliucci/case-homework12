@@ -20,4 +20,14 @@ VALUES
     ('Legal Team Lead', 250000, 4),
     ('Lawyer', 190000, 4);
 
---Create insert for employee
+INSERT INTO employee
+    (first_name, last_name, role_id, manager_id)
+VALUES
+    ('Kevin', 'Kranek', 1, NULL),
+    ('Mike', 'Naso', 2, 1),
+    ('Ashley', 'Colegrove', 3, NULL),
+    ('Jill', 'Barone', 4, 3),
+    ('Nicole', 'Gross', 5, NULL),
+    ('Jack', 'Urich', 6, 7),
+    ('Tommy', 'Wilwrich', 7, NULL),
+    ('Joe', 'Lucheese', 8, 7);
