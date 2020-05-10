@@ -59,17 +59,23 @@ class DB {
 
     // Create a new employee
     createEmployee(employee) {
-        return this.connection.query("INSERT INTO employee SET ?", employee);
+        return this.connection.query("INSERT INTO employee SET ?",
+            employee
+        );
     }
 
     // Create a new role
     createRole(role) {
-        return this.connection.query("INSERT INTO role SET ?", role);
+        return this.connection.query("INSERT INTO role SET ?",
+            role
+        );
     }
 
     // Create a new department
     createDepartment(department) {
-        return this.connection.query("INSERT INTO department SET ?", department);
+        return this.connection.query("INSERT INTO department SET ?",
+            department
+        );
     }
 
 
@@ -87,7 +93,9 @@ class DB {
 
     // Remove a role from the db
     removeRole(roleId) {
-        return this.connection.query("DELETE FROM role WHERE id = ?", roleId);
+        return this.connection.query("DELETE FROM role WHERE id = ?",
+            roleId
+        );
     }
 
     // Remove a department
@@ -116,8 +124,6 @@ class DB {
             "UPDATE employee SET manager_id = ? WHERE id = ?", [managerId, employeeId]
         );
     }
-
 }
-
 
 module.exports = new DB(connection);
