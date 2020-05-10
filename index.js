@@ -82,14 +82,14 @@ async function loadMainPrompts() {
             return viewDepartments();
         case "ADD_EMPLOYEE":
             return addEmployee();
-        case "ADD_ROLES":
-            return addRoles();
+        case "ADD_ROLE":
+            return addRole();
         case "ADD_DEPARTMENT":
             return addDepartment();
         case "REMOVE_EMPLOYEE":
             return removeEmployee();
-        case "REMOVE_ROLES":
-            return viewRoles();
+        case "REMOVE_ROLE":
+            return removeRole();
         case "REMOVE_DEPARTMENT":
             return removeDepartment();
         case "UPDATE_EMPLOYEE_ROLE":
@@ -197,6 +197,7 @@ async function addEmployee() {
         value: id
     }));
 
+
     const { roleId } = await prompt({
         type: "list",
         name: "roleId",
@@ -230,6 +231,50 @@ async function addEmployee() {
     loadMainPrompts();
 }
 
+async function addRole() {
+    const departments = await db.findAllDepartments();
+
+    const departmentChoices = departments.map(({ id, name }) => ({
+        name: name,
+        value: id
+    }))
+
+    const role = await prompt([{
+            name: 'title',
+            message: "What is the title of the new Role?"
+        },
+        {
+            name: 'salary',
+            message: "What is the salary of the new Role?"
+        },
+        {
+            type: 'list',
+            name: "department_id",
+            message: 'Which department is the new role a part of?',
+            choices: departmentChoices
+        }
+    ]);
+
+    await db.createRole(role);
+
+    console.log(`You have added ${role.title} to the list of roles`);
+
+    loadMainPrompts();
+}
+
+async function addDepartment() {
+    const department = await prompt([{
+        name: name,
+        message: "what is the name of the new department."
+    }]);
+
+    awaitdb.createDepartment(department);
+
+    console.log(`You have added ${department.name} to your list of departments`);
+
+    loadMainPrompts();
+}
+
 // - - - - - - REMOVE DATA SECTION - - - - - //
 // - - - - - - - - - - - - - - - - - - - - - //
 async function removeEmployee() {
@@ -252,6 +297,14 @@ async function removeEmployee() {
     console.log("Removed employee from the database");
 
     loadMainPrompts();
+}
+
+async function removeRole() {
+
+}
+
+async function removeDepartment() {
+
 }
 
 // - - - - - - UPDATE DATA SECTION - - - - - //
@@ -291,7 +344,9 @@ async function updateEmployeeRole() {
 
     loadMainPrompts();
 }
+async function updateEmployeeManager() {
 
+}
 // - - - - - - QUIT APP SECTION - - - - - - -//
 // - - - - - - - - - - - - - - - - - - - - - //
 function quit() {

@@ -35,7 +35,7 @@ class DB {
     // 4.) Find all roles, join with departments to display the department name
     findAllRoles() {
         return this.connection.query(
-            "SELECT role.title AS Role, department.name AS Department FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id"
+            "SELECT role.title, department.name AS department FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id"
         );
     }
 
@@ -61,9 +61,15 @@ class DB {
     }
 
     // Create a new role
+    createRole(role) {
+        console.log(role);
+        return this.connection.query("INSERT INTO role SET ?", role);
+    }
 
     // Create a new department
-
+    createDepartment(department) {
+        return this.connection.query("INSERT INTO department SET ?", department);
+    }
 
 
 
