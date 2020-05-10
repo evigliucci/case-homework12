@@ -264,11 +264,11 @@ async function addRole() {
 
 async function addDepartment() {
     const department = await prompt([{
-        name: name,
+        name: 'name',
         message: "what is the name of the new department."
     }]);
 
-    awaitdb.createDepartment(department);
+    await db.createDepartment(department);
 
     console.log(`You have added ${department.name} to your list of departments`);
 
